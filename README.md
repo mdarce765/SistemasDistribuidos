@@ -20,5 +20,7 @@ Rodrigo Ruy Simões - 24.122.092-0
   * para visualizar = reqest reply cliente-servidor
   * em qlqr push que tiver, tem que ter o timestamp atual de quando foi postado em todas as mensagens
   * Todos os pulls tem que ter o "remetente"
+  * Portas 5555-5600 para servidores, 5600-6000 para clientes
+  * Especificar portas de cada socket depois
  
 Biblioteca ZMQ: https://zeromq.org/
