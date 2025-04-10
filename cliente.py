@@ -6,6 +6,3 @@ clientPull= ctx.socket(zmq.PULL)
 clientPull.bind("tcp://*:5600") ##cliente
 clientPush = ctx.socket(zmq.PUSH)
 clientPush.connect("tcp://localhost:5555") #Load balancer
-
-
-
