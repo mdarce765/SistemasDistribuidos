@@ -20,7 +20,7 @@ Rodrigo Ruy Simões - 24.122.092-0
   * Para visualizar = request reply cliente-servidor.
   * Em qualquer push que tiver, tem que ter o timestamp atual de quando foi postado em todas as mensagens.
   * Todos os pulls têm que ter o "remetente"
-  * Portas 5555-5600 para servidores, 5600-6000 para clientes.
+  * Portas 5555-5599 para servidores, 5600-6000 para clientes.
   * Especificar portas de cada socket depois.
  
 Biblioteca ZMQ: https://zeromq.org/
