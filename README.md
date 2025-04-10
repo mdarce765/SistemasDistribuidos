@@ -22,5 +22,6 @@ Rodrigo Ruy Simões - 24.122.092-0
   * Todos os pulls têm que ter o "remetente"
   * Portas 5555-5599 para servidores, 5600-6000 para clientes.
   * Especificar portas de cada socket depois.
+  * Servidores possuem POLLIN
  
 Biblioteca ZMQ: https://zeromq.org/
