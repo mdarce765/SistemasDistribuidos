@@ -76,8 +76,8 @@ while True:
         if msg.tipoRecv == "reqChat": ##retorna o historico do chat!
             servRep.send_string(f"{servEnd},{horarioLocal},repChat,{resp}")
         else: ##Req de teste
-            resp = msg.conteudoRecv + "2"
-            servRep.send_string(f"{servEnd},{horarioLocal},rep,{resp}")
+            respteste = msg.conteudoRecv + "2"
+            servRep.send_string(f"{servEnd},{horarioLocal},rep,{respteste}")
     
         
     
