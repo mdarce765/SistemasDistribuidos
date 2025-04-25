@@ -4,6 +4,7 @@ ctx = zmq.Context()
 clientReq= ctx.socket(zmq.REQ)
 clientPull= ctx.socket(zmq.PULL)
 clientPush = ctx.socket(zmq.PUSH)
+clientSub = ctx.socket(zmq.SUB) ##montar um pollin para sub!!
 portacliente = 5600
 ##clientEnd = f"tcp://localhost:{portacliente}" ##endereco do cliente
 clientReq.connect("tcp://localhost:5555") ##endereco do Rep do load balancer (por agora serv)
@@ -30,6 +31,10 @@ class mensagem:
         self.horarioRecv = int(conteudo[1])
         self.tipoRecv = conteudo[2]
         self.conteudoRecv = conteudo[3] 
+        if self.tipoRecv == "msg":
+            self.conversa = conteudo[4] ##conversa da qual 
+            self.usuario = conteudo[5]
+            self.conteudoMsg = conteudo[6]
         
         
 while True:
@@ -37,13 +42,12 @@ while True:
     
     
     if esc == 0:
-        mensagem = input("Mensagem a ser mandada: ")
-        clientPush.send_string(f"{clientEnd},{horarioLocal},post,{mensagem}")
-        recv = clientPull.recv_string()
-        print(recv)
+        conteudo = input("Mensagem a ser mandada: ")
+        clientPush.send_string(f"{clientEnd},{horarioLocal},post,{conteudo}")
+        
     elif esc == 1:
-        mensagem = input("Mensagem a ser mandada: ")
-        clientReq.send_string(f"{clientEnd},{horarioLocal},req,{mensagem}")
+        conteudo = input("Mensagem a ser mandada: ")
+        clientReq.send_string(f"{clientEnd},{horarioLocal},req,{conteudo}")
         recv = clientReq.recv_string()
         print(recv)
     elif esc == 2:
@@ -51,11 +55,18 @@ while True:
         usuarioEsc = input("Insira usuario com o qual quer conversar: ")
        
         alfabet = sorted([usuario,usuarioEsc])
-        clientReq.send_string(f"{clientEnd},{horarioLocal},reqChat,{alfabet[0]}-{alfabet[1]}")
-        recv = clientReq.recv_string()
+        conversa = f"{alfabet[0]}-{alfabet[1]}"
+        clientReq.send_string(f"{clientEnd},{horarioLocal},reqChat,{conversa}") ##solicita o historico
+        recv = clientReq.recv_string() ##adquire o historico
         msg = mensagem(recv)
         
         print(msg.conteudoRecv)
+        
+        while True:
+            dialogo = input("Diz (EXIT para sair): ")
+            if dialogo == "EXIT":
+                break
+            clientPush.send_string(f"{clientEnd},{horarioLocal},msg,{conversa},{usuario},{dialogo}")
         
     horarioLocal +=1
     

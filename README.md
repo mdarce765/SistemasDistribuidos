@@ -23,10 +23,23 @@ Rodrigo Ruy Simões - 24.122.092-0
   * Portas 5555-5599 para servidores, 5600-6000 para clientes.
   * Especificar portas de cada socket depois.
   * Servidores possuem POLLIN
-
+  
   * Linguagens:
     * Cliente: C/C++
     * Load Balancer: Elixir
     * Servidor: qlqr
+
+  * Tabelas:
+   * Para cada usuário
+    * Horário (Key)
+    * Conteúdo
+   * Para cada conversa
+    * Horário (Key)
+    * Conteúdo
+    * Usuário que mandou
+
+  * A fazer:
+   * Pollin para cliente
+   * Limpar tela para cliente
  
 Biblioteca ZMQ: https://zeromq.org/
