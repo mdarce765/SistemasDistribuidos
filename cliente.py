@@ -10,6 +10,7 @@ portacliente = 5600
 clientReq.connect("tcp://localhost:5555") ##endereco do Rep do load balancer (por agora serv)
 ## clientPull.bind(f"tcp://*:{portacliente}") ##endereco do pull do cliente
 clientPush.connect("tcp://localhost:5556") #endereco do Pull do load balancer (por agora serv)
+clientSub.connect("tcp://localhost:5557")
 #estrutura da mensagem (ip de quem mandou,horarioLocal,tipo,conteudo)
 horarioLocal = 1
 while(True):
@@ -59,7 +60,7 @@ while True:
         clientReq.send_string(f"{clientEnd},{horarioLocal},reqChat,{conversa}") ##solicita o historico
         recv = clientReq.recv_string() ##adquire o historico
         msg = mensagem(recv)
-        
+        clientSub.subscribe(conversa)
         print(msg.conteudoRecv)
         
         while True:
@@ -67,6 +68,8 @@ while True:
             if dialogo == "EXIT":
                 break
             clientPush.send_string(f"{clientEnd},{horarioLocal},msg,{conversa},{usuario},{dialogo}")
+            print(clientSub.recv_string())
+        clientSub.unsubscribe(conversa)
         
     horarioLocal +=1
     
