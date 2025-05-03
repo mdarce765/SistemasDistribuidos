@@ -1,5 +1,5 @@
 import zmq
-import msgpack
+## import msgpack
 ctx = zmq.Context()
 clientReq= ctx.socket(zmq.REQ)
 clientPull= ctx.socket(zmq.PULL)
@@ -13,7 +13,7 @@ clientPush.connect("tcp://localhost:5556") #endereco do Pull do load balancer (p
 clientSub.connect("tcp://localhost:5557")
 #estrutura da mensagem (ip de quem mandou,horarioLocal,tipo,conteudo)
 horarioLocal = 1
-while(True):
+while True:
     try:
         clientPull.bind(f"tcp://*:{portacliente}")
         clientEnd = f"tcp://localhost:{portacliente}" ##endereco do cliente
@@ -37,14 +37,15 @@ class mensagem:
             self.usuario = conteudo[5]
             self.conteudoMsg = conteudo[6]
         
-        
+usuario = input("Insira o seu usuario: ")
 while True:
-    esc = int(input("Push(0) ou RepReq (1) ou Chat(2)? "))
+    esc = int(input("Push(0) ou RepReq (1) ou Chat(2) ou Posts(3)? "))
+    
     
     
     if esc == 0:
         conteudo = input("Mensagem a ser mandada: ")
-        clientPush.send_string(f"{clientEnd},{horarioLocal},post,{conteudo}")
+        clientPush.send_string(f"{clientEnd},{horarioLocal},teste,{conteudo}")
         
     elif esc == 1:
         conteudo = input("Mensagem a ser mandada: ")
@@ -52,7 +53,7 @@ while True:
         recv = clientReq.recv_string()
         print(recv)
     elif esc == 2:
-        usuario = input("Insira o seu usuario: ")
+        
         usuarioEsc = input("Insira usuario com o qual quer conversar: ")
        
         alfabet = sorted([usuario,usuarioEsc])
@@ -63,13 +64,27 @@ while True:
         clientSub.subscribe(conversa)
         print(msg.conteudoRecv)
         
-        while True:
+        while True: ##transformar isso em algo rodando paralelo, para o chat conseguir atualizar enquanto esta sendo digitado
             dialogo = input("Diz (EXIT para sair): ")
             if dialogo == "EXIT":
                 break
             clientPush.send_string(f"{clientEnd},{horarioLocal},msg,{conversa},{usuario},{dialogo}")
             print(clientSub.recv_string())
         clientSub.unsubscribe(conversa)
+        
+    elif esc == 3:
+        escPost = int(input("Postar(0) ou Ver Posts(1) ou Seguir Usuario(2)? "))
+        if escPost == 0:
+            conteudoPost = input("Digite oque quer postar: ")
+            clientPush.send_string(f"{clientEnd},{horarioLocal},post,{usuario},{conteudoPost}")
+        elif escPost == 1:
+            clientReq.send_string(f"{clientEnd},{horarioLocal},verPost,{usuario}")
+            print(clientReq.recv_string())
+        elif escPost == 2:
+            usuarioASeguir = input("Deseja seguir quem? ")
+            clientPush.send_string(f"{clientEnd},{horarioLocal},seguir,{usuario},{usuarioASeguir}")
+
+        
         
     horarioLocal +=1
     
