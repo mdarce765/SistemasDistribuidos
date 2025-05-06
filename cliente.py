@@ -1,4 +1,5 @@
 import zmq
+import ast
 ## import msgpack
 ctx = zmq.Context()
 clientReq= ctx.socket(zmq.REQ)
@@ -25,13 +26,21 @@ while True:
         else:
             raise("FUDEU! Porta muito alta >= 6000!")
         
+
 class mensagem:
     def __init__(self,recv):
         conteudo = recv.split(",")
         self.end = conteudo[0]
         self.horarioRecv = int(conteudo[1])
         self.tipoRecv = conteudo[2]
-        self.conteudoRecv = conteudo[3] 
+        self.conteudoRecv = conteudo[3]
+
+        format_aux = recv.split("[")
+        
+        self.conteudoRecvLIST = ast.literal_eval("[" + format_aux[1])
+        # print(self.conteudoRecv)
+        # print(self.conteudoRecvLIST)
+        # print(type(self.conteudoRecvLIST))
         if self.tipoRecv == "msg":
             self.conversa = conteudo[4] ##conversa da qual 
             self.usuario = conteudo[5]
@@ -57,19 +66,36 @@ while True:
         usuarioEsc = input("Insira usuario com o qual quer conversar: ")
        
         alfabet = sorted([usuario,usuarioEsc])
-        conversa = f"{alfabet[0]}-{alfabet[1]}"
+        conversa = f"{alfabet[0]}_{alfabet[1]}"
+        ## Checar se existe TABLE com este nome
         clientReq.send_string(f"{clientEnd},{horarioLocal},reqChat,{conversa}") ##solicita o historico
         recv = clientReq.recv_string() ##adquire o historico
         msg = mensagem(recv)
         clientSub.subscribe(conversa)
-        print(msg.conteudoRecv)
+        # print(f'esc 2: {msg.conteudoRecvLIST}')
+        extracted_items = [item[0] for item in msg.conteudoRecvLIST]
+        # print(f"extracted {extracted_items}")
+        for item in extracted_items:
+            print(item)
         
         while True: ##transformar isso em algo rodando paralelo, para o chat conseguir atualizar enquanto esta sendo digitado
             dialogo = input("Diz (EXIT para sair): ")
             if dialogo == "EXIT":
                 break
             clientPush.send_string(f"{clientEnd},{horarioLocal},msg,{conversa},{usuario},{dialogo}")
-            print(clientSub.recv_string())
+            
+            # print(f'dialogo: {clientSub.recv_string()}')
+            aux = clientSub.recv_string()
+            res = aux.split('\n')
+            # print(f'1 {res[0]} 2 {res[1]}')
+            historico = ast.literal_eval(res[1])
+            # print(historico)
+            # extracted_items = [item[0] for item in historico]
+            # print(f"extracted {extracted_items}")
+            for item in historico:
+                # print(type(item))
+                print(item)
+
         clientSub.unsubscribe(conversa)
         
     elif esc == 3:
