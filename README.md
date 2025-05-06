@@ -31,20 +31,22 @@ Rodrigo Ruy Simões - 24.122.092-0
     * Servidor: qlqr
 
   * Tabelas:
-   * Para cada usuário
-    * Horário (Key)
-    * Conteúdo postado
-   * Para cada conversa
-    * Horário (Key)
-    * Conteúdo
-    * Usuário que mandou
-   * Seguir (Tabela para correlacionar seguidor e seguido)
-    * Seguido
-    * Seguidor
+    * Para cada usuário
+      * Horário (Key)
+      * Conteúdo postado
+    * Para cada conversa
+      * Horário (Key)
+      * Conteúdo
+      * Usuário que mandou
+    * Seguir (Tabela para correlacionar seguidor e seguido)
+      * Seguido
+      * Seguidor
 
   * A fazer:
    * Pollin para cliente (Chat)
    * Limpar tela para cliente (Chat e Posts)
-   * 
+   * Sincronização de clock
+   * Sincronização de dados
+   * Load Balancer
  
 Biblioteca ZMQ: https://zeromq.org/
