@@ -21,8 +21,9 @@ Rodrigo Ruy Simões - 24.122.092-0
   * Em qualquer push que tiver, tem que ter o timestamp atual de quando foi postado em todas as mensagens.
   * Todos os pulls têm que ter o "remetente"
   * Portas 5555-5599 para servidores, 5600-6000 para clientes.
+  * Talvez as portas possam ser iguais, mas o LOAD BALANCER decide qual servidor recebe qual!
   * Especificar portas de cada socket depois.
-  * Servidores possuem POLLIN
+  * Servidores, usuários e LOAD BALANCER possuem POLLIN
   
   * Linguagens:
     * Cliente: C/C++
@@ -32,14 +33,18 @@ Rodrigo Ruy Simões - 24.122.092-0
   * Tabelas:
    * Para cada usuário
     * Horário (Key)
-    * Conteúdo
+    * Conteúdo postado
    * Para cada conversa
     * Horário (Key)
     * Conteúdo
     * Usuário que mandou
+   * Seguir (Tabela para correlacionar seguidor e seguido)
+    * Seguido
+    * Seguidor
 
   * A fazer:
-   * Pollin para cliente
-   * Limpar tela para cliente
+   * Pollin para cliente (Chat)
+   * Limpar tela para cliente (Chat e Posts)
+   * 
  
 Biblioteca ZMQ: https://zeromq.org/
