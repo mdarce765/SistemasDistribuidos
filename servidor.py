@@ -1,5 +1,5 @@
 import zmq
-## import msgpack
+
 import time
 import sqlite3
 ctx = zmq.Context()
@@ -63,7 +63,7 @@ while True:
         
         recv = servPull.recv_string()
         msg = mensagem(recv)
-        print(f"RECV recebida\n {recv}")
+        print(f"PUSH recebido\n {recv}")
         conferirHorario(msg.horarioRecv)
         # exist = cursor.execute(f"SELECT name FROM sqlite_master WHERE name='{msg.conversa}'")
         # if exist.fetchone() == None:
@@ -107,13 +107,14 @@ while True:
             ##adicionar o usuario a seguir a lista de usuarios que o usuario segue
             ## usuario = msg.usuario
             ## usuarioASeguir = msg.usuarioASeguir
+            print(msg.usuario,msg.usuarioASeguir)
             pass
         elif msg.tipoRecv == "post":
-            print(msg)
+            print(msg.usuario,msg.conteudoMsg)
         else:
             
             #  print("Else do ##CHAT")
-             print(msg.conteudoRecv)
+            print("TIPO PUSH DE TESTE/INVALIDO RECEBIDO")
         #servPush.connect(msg.end) ##conecta ao cliente
         #servPush.send_string("ola :)")
         #print(f"mensagem mandada para {msg.end}")
@@ -123,6 +124,7 @@ while True:
         recv = servRep.recv_string()
         msg = mensagem(recv)
         conferirHorario(msg.horarioRecv)
+        print(f"REQ RECEBIDA\n{recv}")
         print(msg.conteudoRecv)
         
         if msg.tipoRecv == "reqChat": ##retorna o historico inicial do chat!
@@ -141,6 +143,7 @@ while True:
             ##linkar variavel posts ao resultado da query dos posts
             servRep.send_string(f"{servEnd},{horarioLocal},repPost,{posts}")
         else: ##Req de teste
+            print("TIPO REQ DE TESTE/DESCONHECIDO UTILIZADO")
             respteste = msg.conteudoRecv + "2"
             servRep.send_string(f"{servEnd},{horarioLocal},rep,{respteste}")
     
