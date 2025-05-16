@@ -89,12 +89,14 @@ while True:
             res = aux.split('\n')
             # print(f'1 {res[0]} 2 {res[1]}')
             historico = ast.literal_eval(res[1])
-            # print(historico)
+            # print(type(historico))
+            print(historico)
             # extracted_items = [item[0] for item in historico]
             # print(f"extracted {extracted_items}")
-            for item in historico:
+            for item in historico: 
                 # print(type(item))
-                print(item)
+                print(item[0])
+            # print(dialogo)
 
         clientSub.unsubscribe(conversa)
         
