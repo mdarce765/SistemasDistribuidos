@@ -107,7 +107,17 @@ while True:
             clientPush.send_string(f"{clientEnd},{horarioLocal},post,{usuario},{conteudoPost}")
         elif escPost == 1:
             clientReq.send_string(f"{clientEnd},{horarioLocal},verPost,{usuario}")
-            print(clientReq.recv_string())
+            recv = clientReq.recv_string()
+            msg = mensagem(recv)
+            # print(f'{recv}')
+            # extracted_items = [item[0] for item in msg.conteudoRecvLIST]
+            # print(f"extracted {extracted_items}")
+            print('Posts recentes:')
+            for item in msg.conteudoRecvLIST:
+                # print(f'ver post printloop: {item}')
+                print(f'{item[2]}')
+            print('\n')
+
         elif escPost == 2:
             usuarioASeguir = input("Deseja seguir quem? ")
             clientPush.send_string(f"{clientEnd},{horarioLocal},seguir,{usuario},{usuarioASeguir}")

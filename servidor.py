@@ -1,5 +1,6 @@
 import zmq
 ## import msgpack
+import ast
 import time
 import sqlite3
 ctx = zmq.Context()
@@ -107,9 +108,54 @@ while True:
             ##adicionar o usuario a seguir a lista de usuarios que o usuario segue
             ## usuario = msg.usuario
             ## usuarioASeguir = msg.usuarioASeguir
+            pt = sqlite3.connect("post.db")
+            cursor = pt.cursor()
+            cursor.execute(f"CREATE TABLE IF NOT EXISTS segue(seguidor TEXT, seguido TEXT)")
+            cursor.execute(f"""INSERT INTO segue VALUES
+                           ('{msg.usuario}', '{msg.usuarioASeguir}')""")
+            pt.commit()
+            # cursor.execute(f"SELECT conteudo FROM {msg.conversa}")
+            # posts = cursor.fetchall()
+            pt.close()
+            print(f"{msg.usuario} esta seguindo o(a) {msg.usuarioASeguir} !\n")
+
             pass
         elif msg.tipoRecv == "post":
-            print(msg)
+            pt = sqlite3.connect("post.db")
+            cursor = pt.cursor()
+            cursor.execute(f"CREATE TABLE IF NOT EXISTS posta( user TEXT, timestamp TEXT, conteudo TEXT)")
+            cursor.execute(f"CREATE TABLE IF NOT EXISTS segue(seguidor TEXT, seguido TEXT)")
+            # cursor.execute(f"SELECT seguido FROM segue WHERE")
+            # cursor.execute(f"SELECT seguido FROM segue WHERE")
+            print(f'user: {msg.usuario}')
+            # Verifica e adiciona ao segue
+            cursor.execute(f""" SELECT * FROM segue  """)
+            seguidos = cursor.fetchall()
+            lista_simples = [f"({item[0]}, {item[1]})" for item in seguidos]
+            
+            # print(f'seguidos total: {seguidos}')
+            # print(lista_simples)
+            # print(f'Type: {type(lista_simples)}; Lista_simples: {lista_simples}')
+            # print(f'single_item_type: {type(lista_simples[0])}; item: {lista_simples[0]}')
+
+            if f"({msg.usuario}, {msg.usuario})" in lista_simples:
+                print(f"{msg.usuario} is in the list")  # Checagem de duplicata
+            else:
+                print(f"{msg.usuario} is not in the list")
+                cursor.execute(f"INSERT INTO segue VALUES('{msg.usuario}', '{msg.usuario}')")
+            
+            cursor.execute(f"""INSERT INTO posta VALUES
+                           ('{msg.usuario}', '{msg.horarioRecv}', '{msg.usuario}: {msg.conteudoMsg}')""")
+            pt.commit()
+
+            # TESTE APENAS, REMOVER DEPOIS
+            cursor.execute(f"SELECT * FROM posta")
+            posts = cursor.fetchall()
+            print(f'posts var: {posts}')
+            
+            pt.close()
+
+            print("Postado com sucesso!")
         else:
             
             #  print("Else do ##CHAT")
@@ -138,6 +184,32 @@ while True:
             # BD.commit()
             servRep.send_string(f"{servEnd},{horarioLocal},repChat,{chat}")
         elif msg.tipoRecv == "verPost":
+            #BD puxa
+            pt = sqlite3.connect("post.db")
+            cursor = pt.cursor()
+            cursor.execute(f"CREATE TABLE IF NOT EXISTS posta( user TEXT, timestamp TEXT, conteudo TEXT)")
+            cursor.execute(f"CREATE TABLE IF NOT EXISTS segue(seguidor TEXT, seguido TEXT)")
+            # cursor.execute(f"SELECT seguido FROM segue WHERE seguidor='{msg.conteudoRecv}'")
+            print(msg.conteudoRecv)
+            query = f"""SELECT posta.user, posta.timestamp, posta.conteudo FROM posta LEFT JOIN segue ON posta.user = segue.seguido WHERE segue.seguidor = '{msg.conteudoRecv}' ORDER BY posta.timestamp ASC;"""
+            cursor.execute(query)
+            # test = cursor.fetchall()
+            # print(f'Select * from segue: {test}')
+
+            # try:
+            #     print(f'teste[0][0]: {test[0][0]}')
+            # except:
+            #     print(f'Nenhum post foi realizado recentemente!')
+
+            # candidatos = ast.literal_eval(test)
+            # print(candidatos)
+            # cursor.execute(f"""SELECT * FROM posta WHERE user='{msg.usuario}' """)
+            # pt.commit()
+
+
+            # cursor.execute(f"SELECT conteudo FROM posta WHERE ")
+            posts = cursor.fetchall()
+            pt.close()
             ##linkar variavel posts ao resultado da query dos posts
             servRep.send_string(f"{servEnd},{horarioLocal},repPost,{posts}")
         else: ##Req de teste
