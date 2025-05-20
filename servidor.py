@@ -25,7 +25,7 @@ while True:
         print(f"Bind nas portas {portaserv},{portaserv2}")
         break
     except:
-        if (portaini <= 5597):
+        if (portaini <= 5598):
             portaini += 2
         else:
             raise("FUDEU! Porta muito alta >= 6000!")
