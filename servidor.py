@@ -5,15 +5,33 @@ import time
 import sqlite3
 ctx = zmq.Context()
 poller = zmq.Poller()
-portaserv = 5556
-servEnd = f"tcp://localhost:{portaserv}"
+portaini = 5558
+
+
 servPub = ctx.instance().socket(zmq.PUB)
-servPub.bind("tcp://*:5557")
 servRep = ctx.socket(zmq.REP)
 servPull= ctx.socket(zmq.PULL)
 servPush = ctx.socket(zmq.PUSH)
-servRep.bind("tcp://*:5555")
-servPull.bind(f"tcp://*:{portaserv}")
+while True:
+    try:
+        portaserv = portaini
+        portaserv2 = portaini+1
+        portaserv3 = portaini+2
+        servEnd = f"tcp://localhost:{portaserv}"
+        servPull.bind(f"tcp://*:{portaserv}")
+        servRep.bind(f"tcp://*:{portaserv2}")
+        servPub.bind(f"tcp://*:{portaserv3}")
+        print(f"Bind nas portas {portaserv},{portaserv2},{portaserv3}")
+        break
+    except:
+        if (portaini <= 5597):
+            portaini += 3
+        else:
+            raise("FUDEU! Porta muito alta >= 6000!")
+        
+
+
+
 
 poller.register(servRep,zmq.POLLIN)
 poller.register(servPull,zmq.POLLIN)
@@ -127,7 +145,7 @@ while True:
             cursor.execute(f"CREATE TABLE IF NOT EXISTS segue(seguidor TEXT, seguido TEXT)")
             # cursor.execute(f"SELECT seguido FROM segue WHERE")
             # cursor.execute(f"SELECT seguido FROM segue WHERE")
-            print(f'user: {msg.usuario}')
+            print(f'post de user: {msg.usuario}') ##print debug
             # Verifica e adiciona ao segue
             cursor.execute(f""" SELECT * FROM segue  """)
             seguidos = cursor.fetchall()
@@ -190,7 +208,7 @@ while True:
             cursor.execute(f"CREATE TABLE IF NOT EXISTS posta( user TEXT, timestamp TEXT, conteudo TEXT)")
             cursor.execute(f"CREATE TABLE IF NOT EXISTS segue(seguidor TEXT, seguido TEXT)")
             # cursor.execute(f"SELECT seguido FROM segue WHERE seguidor='{msg.conteudoRecv}'")
-            print(msg.conteudoRecv)
+            print(f"{msg.conteudoRecv} quer ver posts!")
             query = f"""SELECT posta.user, posta.timestamp, posta.conteudo FROM posta LEFT JOIN segue ON posta.user = segue.seguido WHERE segue.seguidor = '{msg.conteudoRecv}' ORDER BY posta.timestamp ASC;"""
             cursor.execute(query)
             # test = cursor.fetchall()

@@ -8,7 +8,7 @@ void limparInput(){
 int main() {
     zsock_t *clientPush = zsock_new_push("tcp://localhost:5556");
     zsock_t *clientReq = zsock_new_req("tcp://localhost:5555");
-    zsock_t *clientSub = zsock_new_sub("tcp://localhost:5557",NULL); //usar zsock_set_subscribe(clientSub,canal);
+    zsock_t *clientSub = zsock_new_sub("tcp://localhost:5557",NULL);
     int horarioLocal = 1;
     
     char address[50] = "localhost:boapergunta";
@@ -70,6 +70,7 @@ int main() {
                     case 2:{ //Ver Posts
                         char request[500];
                         sprintf(request,"%s,%d,verPost,%s",address,horarioLocal,usr1);
+                        zstr_send(clientReq,request);
                         printf("%s\n",zstr_recv(clientReq));
                         break;
                         
@@ -80,6 +81,7 @@ int main() {
                         printf("Usuario que deseja seguir: ");
                         scanf("%s",&msg);
                         sprintf(push,"%s,%d,seguir,%s,%s",address,horarioLocal,usr1,msg);
+                        zstr_send(clientPush,push);
                         break;
                     }
                         

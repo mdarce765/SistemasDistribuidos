@@ -21,7 +21,7 @@ while True:
         print(f"Bind na porta {portacliente}")
         break
     except:
-        if (portacliente < 6000):
+        if (portacliente <= 6000):
             portacliente += 1
         else:
             raise("FUDEU! Porta muito alta >= 6000!")
