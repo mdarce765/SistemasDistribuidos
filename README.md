@@ -20,7 +20,7 @@ Rodrigo Ruy Simões - 24.122.092-0
   * Para visualizar = request reply cliente-servidor.
   * Em qualquer push que tiver, tem que ter o timestamp atual de quando foi postado em todas as mensagens.
   * Todos os pulls têm que ter o "remetente"
-  * Portas 5555-5599 para servidores, 5600-6000 para clientes.
+  * Portas 5555-5557 para Load Balancer, 5558-5599 para servidores
   * Talvez as portas possam ser iguais, mas o LOAD BALANCER decide qual servidor recebe qual!
   * Especificar portas de cada socket depois.
   * Servidores, usuários e LOAD BALANCER possuem POLLIN
@@ -31,17 +31,28 @@ Rodrigo Ruy Simões - 24.122.092-0
     * Servidor: qlqr
 
   * Tabelas:
-    * Para cada usuário
-      * Horário (Key)
+    * Posts
+      * Usuário que mandou
+      * Horário 
       * Conteúdo postado
     * Para cada conversa
-      * Horário (Key)
+      * Horário 
       * Conteúdo
       * Usuário que mandou
     * Seguir (Tabela para correlacionar seguidor e seguido)
       * Seguido
       * Seguidor
 
+  * Load Balancer:
+    * Pull: 5555
+    * Rep: 5556
+    * Pub: 5557
+
+  * Servidores:
+    * Pull
+    * Rep
+    * Pub
+    
   * A fazer:
    * Pollin para cliente (Chat)
    * Limpar tela para cliente (Chat e Posts)

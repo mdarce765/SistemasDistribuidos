@@ -9,6 +9,7 @@ portaini = 5558
 
 
 servPub = ctx.instance().socket(zmq.PUB)
+servPub.connect("tcp://*:5557") ##pub/sub do load balancer
 servRep = ctx.socket(zmq.REP)
 servPull= ctx.socket(zmq.PULL)
 servPush = ctx.socket(zmq.PUSH)
@@ -16,16 +17,16 @@ while True:
     try:
         portaserv = portaini
         portaserv2 = portaini+1
-        portaserv3 = portaini+2
+        
         servEnd = f"tcp://localhost:{portaserv}"
         servPull.bind(f"tcp://*:{portaserv}")
         servRep.bind(f"tcp://*:{portaserv2}")
-        servPub.bind(f"tcp://*:{portaserv3}")
-        print(f"Bind nas portas {portaserv},{portaserv2},{portaserv3}")
+        
+        print(f"Bind nas portas {portaserv},{portaserv2}")
         break
     except:
         if (portaini <= 5597):
-            portaini += 3
+            portaini += 2
         else:
             raise("FUDEU! Porta muito alta >= 6000!")
         
