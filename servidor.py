@@ -9,7 +9,7 @@ portaini = 5558
 
 
 servPub = ctx.instance().socket(zmq.PUB)
-servPub.connect("tcp://*:5557") ##pub/sub do load balancer
+servPub.connect("tcp://localhost:5557") ##pub/sub do load balancer
 servRep = ctx.socket(zmq.REP)
 servPull= ctx.socket(zmq.PULL)
 servPush = ctx.socket(zmq.PUSH)
