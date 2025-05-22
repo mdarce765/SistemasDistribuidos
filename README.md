@@ -19,26 +19,22 @@ Rodrigo Ruy Simões - 24.122.092-0
   * Para publicar = push do usuário.
   * Para visualizar = request reply cliente-servidor.
   * Em qualquer push que tiver, tem que ter o timestamp atual de quando foi postado em todas as mensagens.
-  * Todos os pulls têm que ter o "remetente"
   * Portas 5555-5558 para Load Balancer, 5558-5599 para servidores
-  * Talvez as portas possam ser iguais, mas o LOAD BALANCER decide qual servidor recebe qual!
-  * Especificar portas de cada socket depois.
-  * Servidores, usuários e LOAD BALANCER possuem POLLIN
   
   * Linguagens:
     * Cliente: C/C++
-    * Load Balancer: Elixir
-    * Servidor: qlqr
+    * Load Balancer: python/Elixir
+    * Servidor: python
 
   * Tabelas:
     * Posts
       * Usuário que mandou
       * Horário 
       * Conteúdo postado
-    * Para cada conversa
-      * Horário 
-      * Conteúdo
+    * Chats
       * Usuário que mandou
+      * Horário
+      * Conteudo
     * Seguir (Tabela para correlacionar seguidor e seguido)
       * Seguido
       * Seguidor
@@ -54,11 +50,15 @@ Rodrigo Ruy Simões - 24.122.092-0
     * Rep
     * Pub
     
-  * A fazer:
-   * Pollin para cliente (Chat)
-   * Limpar tela para cliente (Chat e Posts)
-   * Sincronização de clock
-   * Sincronização de dados
-   * Load Balancer
  
-Biblioteca ZMQ: https://zeromq.org/
+  
+Bibliotecas necessárias para rodar o cliente em C:  
+Biblioteca CZMQ: https://github.com/zeromq/czmq   
+Executável incluído na pasta Grupo64!
+
+Bibliotecas necessárias para rodar o cliente em Java :  
+Biblioteca JeroMQ: https://github.com/zeromq/jeromq  
+pom.xml incluído na pasta Grupo64!  
+
+Bibliotecas necessárias para rodar o cliente em Python:  
+Biblioteca Pyzmq: https://github.com/zeromq/pyzmq  
