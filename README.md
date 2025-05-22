@@ -12,13 +12,10 @@ Rodrigo Simões Ruy - 24.122.092-0
   * Descrição do padrão de mensagem utilizado em todas as partes do projeto.
   * Descrição dos dados enviados nas mensagens.
   * Diagrama mostrando a relação entre os serviços implementados.
- 
-  * O cliente tem que ter request e sistema de push e pull.
-  * servidor push e pull reply,
- 
-  * Para publicar = push do usuário.
-  * Para visualizar = request reply cliente-servidor.
-  * Em qualquer push que tiver, tem que ter o timestamp atual de quando foi postado em todas as mensagens.
+
+
+
+
   * Portas 5555-5558 para Load Balancer, 5558-5599 para servidores
   
   * Linguagens:
@@ -49,7 +46,18 @@ Rodrigo Simões Ruy - 24.122.092-0
     * Pull
     * Rep
     * Pub
-    
+      
+  * Mensagens:
+    *  Estrutura base: (IP,horariolocal,tipomsg,conteudo)
+    *  Tipos de mensagem (tipomsg):
+       *  msg (IP,horariolocal,'msg',conversa,usuario,conteudo)
+       *  post (IP,horariolocal,'post',conteudo)
+       *  seguir (IP,horariolocal,'seguir',conteudo)
+       *  verChat (IP,horariolocal,'verChat',conteudo)
+       *  repChat (IP,horariolocal,'repChat',conteudo)
+       *  repPost (IP,horariolocal,'repPost'conteudo)
+       *  rep (IP,horariolocal,'rep',conteudo)
+   
  
   
 Bibliotecas necessárias para rodar o cliente em C:  
