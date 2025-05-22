@@ -6,3 +6,7 @@
 !cliente.*
 !*/
 !*.gitignore
+!clienteFINAL.exe
+!pom.xml
+!*.bat
+!*.bash
