@@ -1,5 +1,6 @@
 import zmq
 import ast
+import random
 ## import msgpack
 ctx = zmq.Context()
 clientReq= ctx.socket(zmq.REQ)
@@ -8,12 +9,15 @@ clientPush = ctx.socket(zmq.PUSH)
 clientSub = ctx.socket(zmq.SUB) ##montar um pollin para sub!!
 portacliente = 5600
 ##clientEnd = f"tcp://localhost:{portacliente}" ##endereco do cliente
-clientReq.connect("tcp://localhost:5555") ##endereco do Rep do load balancer (por agora serv)
+clientReq.connect("tcp://localhost:5556") ##endereco do Rep do load balancer (por agora serv)
 ## clientPull.bind(f"tcp://*:{portacliente}") ##endereco do pull do cliente
-clientPush.connect("tcp://localhost:5556") #endereco do Pull do load balancer (por agora serv)
+clientPush.connect("tcp://localhost:5555") #endereco do Pull do load balancer (por agora serv)
 clientSub.connect("tcp://localhost:5557")
 #estrutura da mensagem (ip de quem mandou,horarioLocal,tipo,conteudo)
-horarioLocal = 1
+horarioLocal = 0
+def aumentarTempo():
+    global horarioLocal
+    horarioLocal += random.randint(1,10)
 while True:
     try:
         clientPull.bind(f"tcp://*:{portacliente}")
@@ -48,20 +52,22 @@ class mensagem:
         
 usuario = input("Insira o seu usuario: ")
 while True:
-    esc = int(input("Push(0) ou RepReq (1) ou Chat(2) ou Posts(3)? "))
-    
+    esc = int(input("Sair(0) Push(1) ou RepReq (2) ou Chat(3) ou Posts(4)? "))
     
     
     if esc == 0:
+        break
+    if esc == 1:
         conteudo = input("Mensagem a ser mandada: ")
         clientPush.send_string(f"{clientEnd},{horarioLocal},teste,{conteudo}")
-        
-    elif esc == 1:
+        aumentarTempo()
+    elif esc == 2:
         conteudo = input("Mensagem a ser mandada: ")
         clientReq.send_string(f"{clientEnd},{horarioLocal},req,{conteudo}")
+        aumentarTempo()
         recv = clientReq.recv_string()
         print(recv)
-    elif esc == 2:
+    elif esc == 3:
         
         usuarioEsc = input("Insira usuario com o qual quer conversar: ")
        
@@ -69,6 +75,7 @@ while True:
         conversa = f"{alfabet[0]}_{alfabet[1]}"
         ## Checar se existe TABLE com este nome
         clientReq.send_string(f"{clientEnd},{horarioLocal},reqChat,{conversa}") ##solicita o historico
+        aumentarTempo()
         recv = clientReq.recv_string() ##adquire o historico
         msg = mensagem(recv)
         clientSub.subscribe(conversa)
@@ -83,7 +90,7 @@ while True:
             if dialogo == "EXIT":
                 break
             clientPush.send_string(f"{clientEnd},{horarioLocal},msg,{conversa},{usuario},{dialogo}")
-            
+            aumentarTempo()
             # print(f'dialogo: {clientSub.recv_string()}')
             aux = clientSub.recv_string()
             res = aux.split('\n')
@@ -100,13 +107,15 @@ while True:
 
         clientSub.unsubscribe(conversa)
         
-    elif esc == 3:
+    elif esc == 4:
         escPost = int(input("Postar(0) ou Ver Posts(1) ou Seguir Usuario(2)? "))
         if escPost == 0:
             conteudoPost = input("Digite oque quer postar: ")
             clientPush.send_string(f"{clientEnd},{horarioLocal},post,{usuario},{conteudoPost}")
+            aumentarTempo()
         elif escPost == 1:
             clientReq.send_string(f"{clientEnd},{horarioLocal},verPost,{usuario}")
+            aumentarTempo()
             recv = clientReq.recv_string()
             msg = mensagem(recv)
             # print(f'{recv}')
@@ -121,10 +130,11 @@ while True:
         elif escPost == 2:
             usuarioASeguir = input("Deseja seguir quem? ")
             clientPush.send_string(f"{clientEnd},{horarioLocal},seguir,{usuario},{usuarioASeguir}")
+            aumentarTempo()
 
         
         
-    horarioLocal +=1
+    
     
 
 

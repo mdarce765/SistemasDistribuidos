@@ -16,8 +16,8 @@ public class cliente
             Socket clientPush = context.createSocket(SocketType.PUSH);
             Socket clientReq = context.createSocket(SocketType.REQ);
             Socket clientSub = context.createSocket(SocketType.SUB);
-            clientReq.connect("tcp://localhost:5555");
-            clientPush.connect("tcp://localhost:5556");
+            clientReq.connect("tcp://localhost:5556");
+            clientPush.connect("tcp://localhost:5555");
             clientSub.connect("tcp://localhost:5557");
             if (clientPush == null || clientReq == null || clientSub == null){
                 System.out.println("ALGUMA DAS CONEXOES NAO DEU CERTO!");
@@ -83,7 +83,7 @@ public class cliente
                     String usr2 = scanner.nextLine();
                     String[] users = {usr1,usr2};
                     Arrays.sort(users);
-                    String conversa = users[0] + users[1];
+                    String conversa = users[0] + "_" + users[1];
                     System.out.println(conversa); //print debug
                     clientSub.subscribe(conversa);
                     String reqChat = "End," + String.valueOf(horarioLocal) + ",reqChat," + conversa;

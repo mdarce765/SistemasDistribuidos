@@ -6,8 +6,8 @@ void limparInput(){
     while ((c = getchar()) != '\n' && c != EOF);
 }
 int main() {
-    zsock_t *clientPush = zsock_new_push("tcp://localhost:5556");
-    zsock_t *clientReq = zsock_new_req("tcp://localhost:5555");
+    zsock_t *clientPush = zsock_new_push("tcp://localhost:5555");
+    zsock_t *clientReq = zsock_new_req("tcp://localhost:5556");
     zsock_t *clientSub = zsock_new_sub("tcp://localhost:5557",NULL);
     int horarioLocal = 1;
     
@@ -100,11 +100,11 @@ int main() {
                 printf("%s\n",usr2);
                     
                 if(strcmp(usr1,usr2) >0){
-                    strcpy(conversa,strcat(usr2,usr1));
+                    sprintf(conversa,"%s_%s",usr2,usr1);
                         
                 }
                 else{
-                    strcpy(conversa,strcat(usr1,usr2));
+                    sprintf(conversa,"%s_%s",usr1,usr2);
                 }
                 strcpy(usr1,aux);
                 printf("%s\n",conversa); //print debug

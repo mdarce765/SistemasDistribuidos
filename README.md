@@ -20,7 +20,7 @@ Rodrigo Ruy Simões - 24.122.092-0
   * Para visualizar = request reply cliente-servidor.
   * Em qualquer push que tiver, tem que ter o timestamp atual de quando foi postado em todas as mensagens.
   * Todos os pulls têm que ter o "remetente"
-  * Portas 5555-5557 para Load Balancer, 5558-5599 para servidores
+  * Portas 5555-5558 para Load Balancer, 5558-5599 para servidores
   * Talvez as portas possam ser iguais, mas o LOAD BALANCER decide qual servidor recebe qual!
   * Especificar portas de cada socket depois.
   * Servidores, usuários e LOAD BALANCER possuem POLLIN
@@ -47,6 +47,7 @@ Rodrigo Ruy Simões - 24.122.092-0
     * Pull: 5555
     * Rep: 5556
     * Pub: 5557
+    * Sub: 5558
 
   * Servidores:
     * Pull
