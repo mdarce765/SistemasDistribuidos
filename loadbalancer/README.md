@@ -32,7 +32,8 @@ mix new nome_do_projeto
 
 # PONTOS IMPORTANTES
 * No inicio, quando ocorre um erro, é por conta de o LoadBalancer estar procurando portas para se conectar, isso é normal e ele está funcionando normalmente.
-* Os testes foram realizados no github codespace e também no ubuntu 22.04.
+* Os testes foram realizados no github codespace e também no ubuntu 22.04.0
+* Os testes com Elixir foram realizados com o cliente.py e servidor.py
 
 ### Documentação
 * [ExDoc](https://github.com/elixir-lang/ex_doc)
