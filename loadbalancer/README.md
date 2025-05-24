@@ -1,21 +1,41 @@
 # Loadbalancer
 
-**TODO: Add description**
-
-## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `loadbalancer` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:loadbalancer, "~> 0.1.0"}
-  ]
-end
+## baixar o Elixir
+```bash
+$ sudo add-apt-repository ppa:rabbitmq/rabbitmq-erlang
+$ sudo apt update
+$ sudo apt install git elixir erlang
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/loadbalancer>.
+## Como criar um "projeto" em elixir
+```elixir
+mix new nome_do_projeto
+```
+
+## Como rodar o LoadBalancer em elixir
+* Após criar o projeto
+* cd "NomeProjeto"
+* touch lib/"nomearquivo".ex
+* adicionar o chumak(versão do zeromq do Elixir) ao mix.exs
+    * em "defp deps do" cole "{:chumak, "~> 1.5"}"
+    * ```elixir
+      def deps do
+      [
+        {:loadbalancer, "~> 0.1.0"}
+      ]
+      end
+      ```
+    no terminal digite mix deps.get para baixar a biblioteca
+* escreva o código
+* no terminal digite "iex -S mix" para compilar, isso abrirá um terminal especial "iex(1)>"
+* digite "nomedoDefModule"."nomefunçãoprincipal" para rodar o código
+
+# PONTOS IMPORTANTES
+* No inicio, quando ocorre um erro, é por conta de o LoadBalancer estar procurando portas para se conectar, isso é normal e ele está funcionando normalmente.
+* Os testes foram realizados no github codespace e também no ubuntu 22.04.
+
+### Documentação
+* [ExDoc](https://github.com/elixir-lang/ex_doc)
+* [HexDocs](https://hexdocs.pm)
+* <https://hexdocs.pm/loadbalancer>
 
