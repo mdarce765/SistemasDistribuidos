@@ -1,6 +1,6 @@
 # Loadbalancer
 
-## baixar o Elixir
+## Baixar o Elixir.
 ```bash
 $ sudo add-apt-repository ppa:rabbitmq/rabbitmq-erlang
 $ sudo apt update
@@ -25,17 +25,17 @@ mix new nome_do_projeto
       ]
       end
       ```
-    no terminal digite mix deps.get para baixar a biblioteca
-* escreva o código
-* no terminal digite "iex -S mix" para compilar, isso abrirá um terminal especial "iex(1)>"
-* digite "nomedoDefModule"."nomefunçãoprincipal" para rodar o código
+    No terminal, digite mix deps.get para baixar a biblioteca.
+* Escreva o código.
+* No terminal digite "iex -S mix" para compilar, isso abrirá um terminal especial "iex(1)>"
+* digite "nomedoDefModule"."nomefunçãoprincipal" para rodar o código. (Ex: LoadBalancer.start)
 
 # PONTOS IMPORTANTES
-* No inicio, quando ocorre um erro, é por conta de o LoadBalancer estar procurando portas para se conectar, isso é normal e ele está funcionando normalmente.
+* No início, quando ocorre um erro, é por conta de o LoadBalancer estar procurando portas para se conectar, isso é normal e ele está funcionando normalmente.
 * Os testes foram realizados no github codespace e também no ubuntu 22.04.0
 * Os testes com Elixir foram realizados com o cliente.py e servidor.py
 
-### Documentação
+### Documentação.
 * [ExDoc](https://github.com/elixir-lang/ex_doc)
 * [HexDocs](https://hexdocs.pm)
 * <https://hexdocs.pm/loadbalancer>
