@@ -13,14 +13,11 @@ Rodrigo Simões Ruy - 24.122.092-0
   * Descrição dos dados enviados nas mensagens.
   * Diagrama mostrando a relação entre os serviços implementados.
 
-
-
-
   * Portas 5555-5558 para Load Balancer, 5558-5599 para servidores
   
   * Linguagens:
     * Cliente: C/C++
-    * Load Balancer: python/Elixir
+    * Load Balancer: python/[Elixir](https://github.com/mdarce765/SistemasDistribuidos/tree/main/loadbalancer)
     * Servidor: python
 
   * Tabelas:
@@ -58,8 +55,7 @@ Rodrigo Simões Ruy - 24.122.092-0
        *  repPost (IP,horariolocal,'repPost'conteudo)
        *  rep (IP,horariolocal,'rep',conteudo)
    
- 
-  
+# Bibliotecas para os Clientes
 Bibliotecas necessárias para rodar o cliente em C:  
 Biblioteca CZMQ: https://github.com/zeromq/czmq   
 Executável incluído na pasta Grupo64!
@@ -70,3 +66,13 @@ pom.xml incluído na pasta Grupo64!
 
 Bibliotecas necessárias para rodar o cliente em Python:  
 Biblioteca Pyzmq: https://github.com/zeromq/pyzmq  
+
+# Desenhos
+## Pull, Push
+![image](https://github.com/user-attachments/assets/bacee72d-6d38-4aae-acc0-5c112d32ba95)
+
+## Request, Reply
+![image](https://github.com/user-attachments/assets/1eecd3f3-1e91-40b4-874c-25fa799c4e23)
+
+## Publisher, Subscriver
+![image](https://github.com/user-attachments/assets/7408570f-8c37-4a81-acf7-6b13f2de46e5)
